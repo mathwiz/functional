@@ -1,5 +1,7 @@
 package example
 
+import java.util.NoSuchElementException
+
 
 object Lists {
 
@@ -46,6 +48,7 @@ object Lists {
       else if (x > y.head) gr(x, y.tail)
       else gr(y.head, y.tail)
 
-    gr(0, xs)
+    if (xs.isEmpty) throw new NoSuchElementException
+    else gr(0, xs)
   }
 }
