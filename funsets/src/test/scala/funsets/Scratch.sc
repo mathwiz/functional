@@ -18,3 +18,11 @@ def general(i: Int => Int)(g: (Int, Int) => Int)(f: Int => Int)(a: Int, b: Int):
 general(x => 0)((x, y) => x + y)(x => x)(1, 4);
 
 general(x => 1)((x, y) => x * y)(x => x)(1, 4);
+
+def product2(a: Int, b: Int) = general(x => 1)((x, y) => x * y)(x => x)(a, b);
+
+def sum2(a: Int, b: Int) = general(x => 0)((x, y) => x + y)(x => x)(a, b);
+
+sum2(1, 4);
+product2(1, 4);
+
