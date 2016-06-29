@@ -19,10 +19,18 @@ general(x => 0)((x, y) => x + y)(x => x)(1, 4);
 
 general(x => 1)((x, y) => x * y)(x => x)(1, 4);
 
-def product2(a: Int, b: Int) = general(x => 1)((x, y) => x * y)(x => x)(a, b);
+def product2(f: Int => Int)(a: Int, b: Int) = general(x => 1)((x, y) => x * y)(f)(a, b);
 
-def sum2(a: Int, b: Int) = general(x => 0)((x, y) => x + y)(x => x)(a, b);
+def sum2(f: Int => Int)(a: Int, b: Int) = general(x => 0)((x, y) => x + y)(f)(a, b);
 
-sum2(1, 4);
-product2(1, 4);
+sum2(x => x)(1, 4);
+product2(x => x)(1, 4);
+
+def sumOfSquares(a: Int, b: Int): Int =
+  sum2(x => x * x)(a, b)
+
+sumOfSquares(1,3);
+
+
+
 
