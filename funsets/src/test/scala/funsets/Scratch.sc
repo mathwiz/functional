@@ -39,7 +39,7 @@ import math.abs;
 def fixedPoint(f: Double => Double)(x: Double): Double = {
   val tolerance = 0.0001;
   def iterate(y: Double): Double = {
-    val next = averageDamp(f)(y);
+    val next = f(y);
     if (abs(y - next) / y < tolerance) next
     else iterate(next)
   }
@@ -47,10 +47,12 @@ def fixedPoint(f: Double => Double)(x: Double): Double = {
 }
 
 def sqrt(x: Double) =
-  fixedPoint(y => x / y)(x)
+  fixedPoint(averageDamp(y => x / y))(x)
 
 sqrt(4);
 sqrt(2);
+sqrt(16);
+
 
 
 
