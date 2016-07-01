@@ -29,7 +29,29 @@ product2(x => x)(1, 4);
 def sumOfSquares(a: Int, b: Int): Int =
   sum2(x => x * x)(a, b)
 
-sumOfSquares(1,3);
+sumOfSquares(1, 3);
+
+def averageDamp(f: Double => Double)(x: Double): Double =
+  (x + f(x)) / 2.0
+
+import math.abs;
+
+def fixedPoint(f: Double => Double)(x: Double): Double = {
+  val tolerance = 0.0001;
+  def iterate(y: Double): Double = {
+    val next = averageDamp(f)(y);
+    if (abs(y - next) / y < tolerance) next
+    else iterate(next)
+  }
+  iterate(x);
+}
+
+def sqrt(x: Double) =
+  fixedPoint(y => x / y)(x)
+
+sqrt(4);
+sqrt(2);
+
 
 
 
