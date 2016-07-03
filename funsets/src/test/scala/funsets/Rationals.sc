@@ -1,9 +1,43 @@
+val x = new Rational(1, 3);
+val y = new Rational(5, 7);
+val z = new Rational(3, 2);
+x.add(y)
+x.sub(y)
+x.sub(y).neg
+x.mul(y)
+x.div(y)
+y.div(x)
+x.sub(y).sub(z)
+y.add(y)
+x.less(y)
+x.max(y)
+y.max(x)
+x.mul(new Rational(3))
+
+//new Rational(1,0)
+//
 class Rational(numer: Int, denom: Int) {
-  def n = numer
+  require(denom != 0, "denominator must not be zero")
 
-  def d = denom
+  private def gcd(a: Int, b: Int): Int = if (b == 0) a else gcd(b, a % b)
 
-  override def toString = n + "/" + d;
+  private val g = gcd(numer, denom)
+
+  def this(numer: Int) = this(numer, 1)
+
+  val n = numer / g
+
+  val d = denom / g
+
+  override def toString = if (d == 1) "" + n else n + "/" + d;
+
+  def max(that: Rational) = if (less(that)) that else this
+
+  def less(that: Rational) = n * that.d < that.n * d
+
+  def equals(that: Rational) = n * that.d == that.n * d
+
+  def greater(that: Rational) = !less(that) && !equals(that)
 
   def neg = new Rational(-n, d)
 
@@ -17,16 +51,6 @@ class Rational(numer: Int, denom: Int) {
 
   def div(that: Rational) = mul(that.recip)
 }
-
-val x = new Rational(1, 2);
-val y = new Rational(2, 3);
-val z = new Rational(3, 2);
-println(x.add(y));
-println(x.sub(y));
-println(x.sub(y).neg);
-println(x.mul(y));
-println(x.div(y));
-println(y.div(x))
 
 
 
