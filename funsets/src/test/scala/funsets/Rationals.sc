@@ -13,41 +13,43 @@ x.less(y)
 x.max(y)
 y.max(x)
 x.mul(new Rational(3))
+new Rational(1, 2).numer
+new Rational(1, 2).less(new Rational(2, 3))
 
 //new Rational(1,0)
 //
-class Rational(numer: Int, denom: Int) {
-  require(denom != 0, "denominator must not be zero")
+class Rational(n: Int, d: Int) {
+  require(d != 0, "denominator must not be zero")
 
   private def gcd(a: Int, b: Int): Int = if (b == 0) a else gcd(b, a % b)
 
-  private val g = gcd(numer, denom)
+  private val g = gcd(n, d)
 
   def this(numer: Int) = this(numer, 1)
 
-  val n = numer / g
+  val numer = n / g
 
-  val d = denom / g
+  val denom = d / g
 
-  override def toString = if (d == 1) "" + n else n + "/" + d;
+  override def toString = if (denom == 1) "" + numer else numer + "/" + denom;
 
   def max(that: Rational) = if (less(that)) that else this
 
-  def less(that: Rational) = n * that.d < that.n * d
+  def less(that: Rational) = numer * that.denom < that.numer * denom
 
-  def equals(that: Rational) = n * that.d == that.n * d
+  def equals(that: Rational) = numer * that.denom == that.numer * denom
 
   def greater(that: Rational) = !less(that) && !equals(that)
 
-  def neg = new Rational(-n, d)
+  def neg = new Rational(-numer, denom)
 
-  def recip = new Rational(d, n)
+  def recip = new Rational(denom, numer)
 
-  def add(that: Rational) = new Rational(n * that.d + that.n * d, d * that.d)
+  def add(that: Rational) = new Rational(numer * that.denom + that.numer * denom, denom * that.denom)
 
   def sub(that: Rational) = add(that.neg)
 
-  def mul(that: Rational) = new Rational(n * that.n, d * that.d)
+  def mul(that: Rational) = new Rational(numer * that.numer, denom * that.denom)
 
   def div(that: Rational) = mul(that.recip)
 }
