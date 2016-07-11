@@ -1,4 +1,4 @@
-package foo
+package common
 
 /**
   * Created by Yohan on 7/10/2016.

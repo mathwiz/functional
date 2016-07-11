@@ -1,6 +1,6 @@
-import foo._
+import common.Rational
 
-val a = new foo.Rational(1, 2)
+val a = new Rational(1, 2)
 a.numer
 a.denom
 
