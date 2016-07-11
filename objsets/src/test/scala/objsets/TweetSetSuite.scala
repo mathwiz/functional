@@ -12,8 +12,8 @@ class TweetSetSuite extends FunSuite {
     val set1 = new Empty
     val set2 = set1.incl(new Tweet("a", "a body", 20))
     val set3 = set2.incl(new Tweet("b", "b body", 20))
-    val c = new Tweet("c", "c body", 7)
-    val d = new Tweet("d", "d body", 9)
+    val c = new Tweet("c", "c body", 21)
+    val d = new Tweet("d", "d body", 27)
     val set4c = set3.incl(c)
     val set4d = set3.incl(d)
     val set5 = set4c.incl(d)
@@ -45,6 +45,14 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
+  test("mostRetweeted: ") {
+    new TestSets {
+      assert(set2.mostRetweeted.retweets === 20)
+      assert(set4c.mostRetweeted.retweets === 21)
+      assert(set4d.mostRetweeted.retweets === 27)
+    }
+  }
+
   test("union: set4c and set4d") {
     new TestSets {
       assert(size(set4c.union(set4d)) === 4)
@@ -67,7 +75,28 @@ class TweetSetSuite extends FunSuite {
     new TestSets {
       val trends = set5.descendingByRetweet
       assert(!trends.isEmpty)
-      assert(trends.head.user == "a" || trends.head.user == "b")
+      assert(trends.head.user == "d")
+      assert(trends.tail.head.user == "c")
+      assert(trends.tail.tail.head.user == "a" || trends.tail.tail.head.user == "b")
+    }
+  }
+
+  test("List behavior") {
+    new TestSets {
+      val google = List("android", "Android", "galaxy", "Galaxy", "nexus", "Nexus")
+      val apple = List("ios", "iOS", "iphone", "iPhone", "ipad", "iPad")
+      val appleText = "These new Apple patents give a sneak peek at what future iPhone cameras might have in store. http://t.co/0YT9rjxp"
+      val googleText = "Ooh, a galaxy-shooting camera you might actually afford http://t.co/VLXkarGV"
+      val amazonText = "Kindle Paperwhite Review: Forget Everything Else, This Is the E-Reader You Want http://t.co/737W6aNC"
+
+      def hasWord(words: List[String], text: String) : Boolean  =
+        if (words.isEmpty) false
+        else if (text.contains(words.head)) true
+        else hasWord(words.tail, text)
+
+      assert(hasWord(google, googleText))
+      assert(hasWord(apple, appleText))
+      assert(!hasWord(google, amazonText))
     }
   }
 
