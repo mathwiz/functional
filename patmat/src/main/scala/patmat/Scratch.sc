@@ -24,7 +24,7 @@ object Zero extends Nat {
 
   override def -(that: Nat): Nat = if (that.isZero) this else throw new UnsupportedOperationException("Subtraction from Zero")
 
-  override def toString: String = "0"
+  override def toString: String = "Zero"
 
   override def intVal: Int = 0
 }
@@ -46,7 +46,12 @@ class Succ(n: Nat) extends Nat {
 }
 
 val one = new Succ(Zero)
+val anotherOne = Zero.successor
 val two = new Succ(one)
 val four = two + two
 four.intVal
+one + anotherOne
+one - anotherOne
+four + four
+(four + four).intVal
 
