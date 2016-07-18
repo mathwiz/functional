@@ -9,20 +9,20 @@ abstract class Nat {
 
   def -(that: Nat): Nat
 
-  /* Violation of simple Peano numbers for testing */
+  /* Cheating to include the Int representation. Not to be used except for testing */
   def intVal: Int
 }
 
 object Zero extends Nat {
   override def isZero: Boolean = true
 
-  override def predecessor: Nat = throw new UnsupportedOperationException("no predecessor")
+  override def predecessor: Nat = throw new UnsupportedOperationException("Zero has no predecessor")
 
   override def successor: Nat = new Succ(this)
 
   override def +(that: Nat): Nat = that
 
-  override def -(that: Nat): Nat = if (that.isZero) this else throw new UnsupportedOperationException("subtraction produces negative")
+  override def -(that: Nat): Nat = if (that.isZero) this else throw new UnsupportedOperationException("Subtraction from Zero")
 
   override def toString: String = "0"
 
