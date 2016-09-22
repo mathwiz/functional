@@ -77,14 +77,14 @@ object Huffman {
     * }
     */
   def times(chars: List[Char]): List[(Char, Int)] = {
-    val sorted = chars.sorted
-    def iter(acc: List[(Char, Int)], cs: List[Char]) = {
-      if (acc.isEmpty) acc
-      else if (cs.head.equals(acc.head._1)) acc
-      else acc
+    def iter(acc: List[(Char, Int)], cs: List[Char]): List[(Char, Int)] = {
+      if (cs.isEmpty) acc
+      else if (!acc.isEmpty && acc.head._1 == cs.head) iter((acc.head._1, acc.head._2 + 1) :: acc.tail, cs.tail)
+      else iter((cs.head, 1) :: acc, cs.tail)
     }
-    iter(List(), sorted)
+    iter(List(), chars.sorted)
   }
+
 
   /**
     * Returns a list of `Leaf` nodes for a given frequency table `freqs`.
