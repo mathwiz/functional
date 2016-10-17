@@ -17,11 +17,9 @@ def times(chars: List[Char]): List[(Char, Int)] = {
 }
 
 val chars = List('z', 'c', 'a', 'a', 'b', 'c', 'a', 'd', 'd')
-chars.sorted
 val t = times(chars)
-t
-Huffman.chars(t2)
 
+def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = ???
 
 
 
