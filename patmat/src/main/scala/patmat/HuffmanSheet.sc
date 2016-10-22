@@ -1,27 +1,36 @@
-import patmat.Huffman
-import patmat.Huffman.{Fork, Leaf, CodeTree}
+import patmat.Huffman.weight
+import patmat.Huffman.makeCodeTree
+import patmat.Huffman.{CodeTree, Fork, Leaf}
 
-val sampleTree = Huffman.makeCodeTree(
-  Huffman.makeCodeTree(Leaf('x', 1), Leaf('e', 1)),
+val sampleTree = makeCodeTree(
+  makeCodeTree(Leaf('x', 1), Leaf('e', 1)),
   Leaf('t', 2)
 )
-val sampleTree2 = Huffman.makeCodeTree(Leaf('t', 2), Leaf('x',1))
+val sampleTree2 = makeCodeTree(Leaf('t', 2), Leaf('x',1))
 
 val t2 = Fork(Fork(Leaf('a', 2), Leaf('b', 3), List('a', 'b'), 5), Leaf('d', 4), List('a', 'b', 'd'), 9)
 val chars = List('z', 'c', 'a', 'a', 'b', 'c', 'a', 'd', 'd', 'b', 'y', 'z', 'a', 'e', 'e', 'e', 'd')
 val t = times(chars)
-makeOrderedLeafList(t)
+val ts = makeOrderedLeafList(t)
+val comb = combine(ts)
+val s = singleton(comb)
+
+def combine(trees: List[CodeTree]): List[CodeTree] = {
+  def order(f: Fork, xs: List[CodeTree]) : List[CodeTree] = xs match {
+    case List() => f :: Nil
+    case h :: t =>
+      if (f.weight > weight(h)) h :: order(f, t)
+      else f :: xs
+  }
+  trees match {
+    case List() => List()
+    case h :: Nil => trees
+    case h1 :: h2 :: t => order(makeCodeTree(h1, h2), t)
+  }
+}
+
 
 def singleton(trees: List[CodeTree]): Boolean = return trees.length == 1
-
-def times(chars: List[Char]): List[(Char, Int)] = {
-  def iter(acc: List[(Char, Int)], cs: List[Char]): List[(Char, Int)] = {
-    if (cs.isEmpty) acc
-    else if (!acc.isEmpty && acc.head._1 == cs.head) iter((acc.head._1, acc.head._2 + 1) :: acc.tail, cs.tail)
-    else iter((cs.head, 1) :: acc, cs.tail)
-  }
-  iter(List(), chars.sorted)
-}
 
 def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
   def order(leaf: Leaf, leafs: List[Leaf]): List[Leaf] = leafs match {
@@ -37,5 +46,11 @@ def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
   iter(freqs, Nil)
 }
 
-
-
+def times(chars: List[Char]): List[(Char, Int)] = {
+  def iter(acc: List[(Char, Int)], cs: List[Char]): List[(Char, Int)] = {
+    if (cs.isEmpty) acc
+    else if (!acc.isEmpty && acc.head._1 == cs.head) iter((acc.head._1, acc.head._2 + 1) :: acc.tail, cs.tail)
+    else iter((cs.head, 1) :: acc, cs.tail)
+  }
+  iter(List(), chars.sorted)
+}
