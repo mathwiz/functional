@@ -1,11 +1,18 @@
 import patmat.Huffman
-import patmat.Huffman.{Fork, Leaf}
+import patmat.Huffman.{Fork, Leaf, CodeTree}
 
-val t2 = Fork(Fork(Leaf('a', 2), Leaf('b', 3), List('a', 'b'), 5), Leaf('d', 4), List('a', 'b', 'd'), 9)
 val sampleTree = Huffman.makeCodeTree(
   Huffman.makeCodeTree(Leaf('x', 1), Leaf('e', 1)),
   Leaf('t', 2)
 )
+val sampleTree2 = Huffman.makeCodeTree(Leaf('t', 2), Leaf('x',1))
+
+val t2 = Fork(Fork(Leaf('a', 2), Leaf('b', 3), List('a', 'b'), 5), Leaf('d', 4), List('a', 'b', 'd'), 9)
+val chars = List('z', 'c', 'a', 'a', 'b', 'c', 'a', 'd', 'd', 'b', 'y', 'z', 'a', 'e', 'e', 'e', 'd')
+val t = times(chars)
+makeOrderedLeafList(t)
+
+def singleton(trees: List[CodeTree]): Boolean = return trees.length == 1
 
 def times(chars: List[Char]): List[(Char, Int)] = {
   def iter(acc: List[(Char, Int)], cs: List[Char]): List[(Char, Int)] = {
@@ -15,9 +22,6 @@ def times(chars: List[Char]): List[(Char, Int)] = {
   }
   iter(List(), chars.sorted)
 }
-
-val chars = List('z', 'c', 'a', 'a', 'b', 'c', 'a', 'd', 'd', 'b', 'y', 'z', 'a', 'e', 'e', 'e', 'd')
-val t = times(chars)
 
 def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
   def order(leaf: Leaf, leafs: List[Leaf]): List[Leaf] = leafs match {
@@ -34,6 +38,4 @@ def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
 }
 
 
-
-makeOrderedLeafList(t)
 
