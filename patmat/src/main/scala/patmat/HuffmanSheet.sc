@@ -17,6 +17,18 @@ val encoded = encode(huffman.head)("cabbyebyebyebeedeedbabybabyzedeyeaddeye".toL
 val decoded = decode(huffman.head, encoded)
 val charsTest = extractChars(huffman.head)
 val codeTable = convert(huffman.head)
+val quick = quickEncode(huffman.head)("cabbyebyebyebeedeedbabybabyzedeyeaddeye".toList)
+val quickDecode = decode(huffman.head, quick)
+val worked = decoded.equals(quickDecode)
+
+def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+  val table = convert(tree)
+  def accumulate(cs: List[Char], acc: List[Bit]): List[Bit] = cs match {
+    case Nil => acc
+    case h::t => accumulate(t, codeBits(table)(h) ::: acc)
+  }
+  accumulate(text, Nil).reverse
+}
 
 def convert(tree: CodeTree): CodeTable = {
   val chars = extractChars(tree)
