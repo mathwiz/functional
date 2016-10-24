@@ -10,6 +10,8 @@ nums.tail
 fruit.head
 veg.head
 isort(nums4)
+List('a', 'b')::Nil
+
 
 val c = List(nums, 88, nums4, 77)
 flatten(c)

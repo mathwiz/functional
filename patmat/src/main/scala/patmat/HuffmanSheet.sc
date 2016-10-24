@@ -1,6 +1,4 @@
-import patmat.Huffman.weight
-import patmat.Huffman.makeCodeTree
-import patmat.Huffman.{CodeTree, Fork, Leaf}
+import patmat.Huffman._
 
 val sampleTree = makeCodeTree(
   makeCodeTree(Leaf('x', 1), Leaf('e', 1)),
@@ -14,6 +12,41 @@ val t = times(chars)
 val ts = makeOrderedLeafList(t)
 val comb = combine(ts)
 val s = singleton(comb)
+val huffman = until(singleton, combine)(ts)
+val encoded = encode(huffman.head)("cabbyebyebyebeedeedbabybabyzedeyeaddeye".toList)
+val decoded = decode(huffman.head, encoded)
+
+def decode(tree: CodeTree, bits: List[Bit]): List[Char] = {
+  def decodeChar(sub: CodeTree, bs: List[Bit], acc: Int): (Char, Int) = sub match {
+    case Leaf(c, w) => (c, acc)
+    case Fork(l, r, cs, w) => decodeChar(if (bs.head == 0) l else r, bs.tail, acc+1)
+  }
+  def accumulate(bs: List[Bit], acc: List[Char]): List[Char] = bs match {
+    case Nil => acc
+    case h::t =>
+      val decode = decodeChar(tree, bs, 0)
+      accumulate(bs.drop(decode._2), decode._1::acc)
+  }
+  accumulate(bits, Nil).reverse
+}
+
+def encode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+  def encodeChar(sub: CodeTree, ch: Char, acc: List[Bit]): List[Bit] = sub match {
+    case Leaf(c, w) => if (c==ch) acc else Nil
+    case Fork(l, r, cs, w) => if (cs.contains(ch)) encodeChar(l, ch, 0::acc) ::: encodeChar(r, ch, 1::acc) else Nil
+  }
+  def accumulate(cs: List[Char], acc: List[Bit]): List[Bit] = cs match {
+    case Nil => acc
+    case h::t =>accumulate(t, encodeChar(tree, h, Nil) ::: acc)
+  }
+  accumulate(text, Nil).reverse
+}
+
+def createCodeTree(chars: List[Char]): CodeTree = until(singleton, combine)(makeOrderedLeafList(times(chars))).head
+
+def until(singleton: List[CodeTree] => Boolean, combine: List[CodeTree] => List[CodeTree])(trees: List[CodeTree]): List[CodeTree] =
+  if (singleton(trees)) trees
+  else until(singleton, combine)(combine(trees))
 
 def combine(trees: List[CodeTree]): List[CodeTree] = {
   def order(f: Fork, xs: List[CodeTree]) : List[CodeTree] = xs match {
@@ -28,7 +61,6 @@ def combine(trees: List[CodeTree]): List[CodeTree] = {
     case h1 :: h2 :: t => order(makeCodeTree(h1, h2), t)
   }
 }
-
 
 def singleton(trees: List[CodeTree]): Boolean = return trees.length == 1
 
