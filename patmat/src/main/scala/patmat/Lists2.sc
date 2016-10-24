@@ -11,7 +11,8 @@ fruit.head
 veg.head
 isort(nums4)
 List('a', 'b')::Nil
-
+List()==Nil
+nums4 ::: Nil
 
 val c = List(nums, 88, nums4, 77)
 flatten(c)

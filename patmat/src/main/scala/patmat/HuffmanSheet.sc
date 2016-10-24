@@ -15,6 +15,31 @@ val s = singleton(comb)
 val huffman = until(singleton, combine)(ts)
 val encoded = encode(huffman.head)("cabbyebyebyebeedeedbabybabyzedeyeaddeye".toList)
 val decoded = decode(huffman.head, encoded)
+val charsTest = extractChars(huffman.head)
+val codeTable = convert(huffman.head)
+
+def convert(tree: CodeTree): CodeTable = {
+  val chars = extractChars(tree)
+  def encodeChar(sub: CodeTree, ch: Char, acc: List[Bit]): List[Bit] = sub match {
+    case Leaf(c, w) => if (c==ch) acc else Nil
+    case Fork(l, r, cs, w) => if (cs.contains(ch)) encodeChar(l, ch, 0::acc) ::: encodeChar(r, ch, 1::acc) else Nil
+  }
+  def accumulate(cs: List[Char], acc: CodeTable): CodeTable = cs match {
+    case Nil => acc
+    case h::t => accumulate(t, mergeCodeTables(List((h, encodeChar(tree, h, Nil))), acc))
+  }
+  accumulate(chars, Nil)
+}
+
+def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = a ::: b
+
+def extractChars(tree: CodeTree): List[Char] = {
+  def walk(t: CodeTree, acc: List[Char]) : List[Char] = t match {
+    case Leaf(c, w) => c :: acc
+    case Fork(l, r, cs, w) => walk(l, acc) ::: walk(r, acc)
+  }
+  walk(tree, Nil)
+}
 
 def decode(tree: CodeTree, bits: List[Bit]): List[Char] = {
   def decodeChar(sub: CodeTree, bs: List[Bit], acc: Int): (Char, Int) = sub match {
@@ -37,7 +62,7 @@ def encode(tree: CodeTree)(text: List[Char]): List[Bit] = {
   }
   def accumulate(cs: List[Char], acc: List[Bit]): List[Bit] = cs match {
     case Nil => acc
-    case h::t =>accumulate(t, encodeChar(tree, h, Nil) ::: acc)
+    case h::t => accumulate(t, encodeChar(tree, h, Nil) ::: acc)
   }
   accumulate(text, Nil).reverse
 }
