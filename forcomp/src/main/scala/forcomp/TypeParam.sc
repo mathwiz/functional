@@ -17,8 +17,8 @@ def mergesort[T](xs: List[T])(lt: (T, T) => Boolean): List[T] = {
 
 def merge[T](xs: List[T], ys: List[T])(lt: (T, T) => Boolean): List[T] =
   (xs, ys) match {
-    case (Nil, ys) => ys
-    case (xs, Nil) => xs
+    case (Nil, h :: t) => ys
+    case (h :: t, Nil) => xs
     case (xh :: xt, yh :: yt) =>
       if (lt(xh, yh)) xh :: merge(xt, ys)(lt) else yh :: merge(xs, yt)(lt)
   }
