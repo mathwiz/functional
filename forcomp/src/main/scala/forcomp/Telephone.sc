@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object x {
-  val in = Source.fromFile("C:\\Users\\Yohan\\Documents\\GitHub\\TDD\\python\\intro_comp_sci_600\\words.txt")
+  val in = Source.fromFile("C:\\Users\\Yohan\\Documents\\GitHub\\functional\\forcomp\\src\\main\\resources\\forcomp\\linuxwords.txt")
   val words = in.getLines.toList filter (word => word forall (ch => ch.isLetter))
   val mnem = Map('2' -> "ABC", '3' -> "DEF", '4' -> "GHI", '5' -> "JKL", '6' -> "MNO", '7' -> "PQRS", '8' -> "TUV", '9' -> "WXYZ")
   val charCode: Map[Char, Char] = for ((digit, str) <- mnem; ltr <- str) yield ltr -> digit
