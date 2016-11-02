@@ -9,21 +9,32 @@ val sentence = List("A", "bird", "in", "the", "hand", "is", "worth", "two", "in"
 sentence.mkString("")
 val words = List("ate", "eat", "tea", "ape")
 words groupBy (x => wordOccurrences(x))
-val fullSet = wordOccurrences("peel")
+val fullSet = wordOccurrences("abba")
 val allPairs =
   for {
     pair <- fullSet
     i <- 1 to pair._2
   } yield (pair._1, i)
-val sub = subset(fullSet)
+val subsets = fullSet.toSet.subsets.map(x => x.toList).toList
+fullSet.indexOf(('b', 2))
+val withMoreThanOne = fullSet.filter(x => x._2 > 1)
+val withOnlyOne = fullSet.filterNot(x => x._2 > 1)
+val expanded = (for {
+  pair <- withMoreThanOne
+  subset <- subsets if subset.contains(pair)
+  i <- 1 to pair._2
+} yield subset.patch(subset.indexOf(pair), List((pair._1, i)), 1)).distinct
+val all = expanded ++ withOnlyOne
 
+val sub = subset(fullSet)
+sub.length - all.length
 def subset(occurrences: Occurrences): List[List[(Char, Int)]] = {
-  val allPairs =
-    for {
-      pair <- occurrences
-      i <- 1 to pair._2
-    } yield (pair._1, i)
-  allPairs.toSet.subsets.map(x => x.toList).toList
+  val subsets = occurrences.toSet.subsets.map(x => x.toList).toList
+  (for {
+    pair <- occurrences
+    subset <- subsets if subset.contains(pair)
+    i <- 1 to pair._2
+  } yield subset.patch(subset.indexOf(pair), List((pair._1, i)), 1)).distinct
 }
 
 def wordOccurrences(w: Word): Occurrences = {

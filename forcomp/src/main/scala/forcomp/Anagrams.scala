@@ -84,7 +84,14 @@ object Anagrams {
     * Note that the order of the occurrence list subsets does not matter -- the subsets
     * in the example above could have been displayed in some other order.
     */
-  def combinations(occurrences: Occurrences): List[Occurrences] = occurrences.toSet.subsets.map(x => x.toList).toList
+  def combinations(occurrences: Occurrences): List[Occurrences] = {
+    val subsets = occurrences.toSet.subsets.map(x => x.toList).toList
+    (for {
+      pair <- occurrences
+      subset <- subsets if subset.contains(pair)
+      i <- 1 to pair._2
+    } yield subset.patch(subset.indexOf(pair), List((pair._1, i)), 1)).distinct
+  }
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
     *
