@@ -86,11 +86,16 @@ object Anagrams {
     */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
     val subsets = occurrences.toSet.subsets.map(x => x.toList).toList
-    (for {
-      pair <- occurrences
-      subset <- subsets if subset.contains(pair)
-      i <- 1 to pair._2
-    } yield subset.patch(subset.indexOf(pair), List((pair._1, i)), 1)).distinct
+    def combinationList(ls: List[List[(Char,Int)]]): List[List[(Char,Int)]] = ls match {
+      case Nil => Nil :: Nil
+      case head :: tail => val rec = combinationList(tail)
+        rec.flatMap(r => head.map(t => t :: r))
+    }
+    def combinations(pairs: List[(Char, Int)]): List[List[(Char, Int)]] = {
+      val allPairs = pairs map (p => for (n <- List.range(1, p._2 + 1)) yield (p._1, n))
+      combinationList(allPairs)
+    }
+    subsets flatMap combinations
   }
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
