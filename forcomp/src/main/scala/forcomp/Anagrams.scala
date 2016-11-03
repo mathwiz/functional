@@ -108,7 +108,13 @@ object Anagrams {
     * Note: the resulting value is an occurrence - meaning it is sorted
     * and has no zero-entries.
     */
-  def subtract(x: Occurrences, y: Occurrences): Occurrences = ???
+  def subtract(x: Occurrences, y: Occurrences): Occurrences = {
+    def iter(subs: Occurrences, acc: Occurrences): Occurrences = subs match {
+      case Nil => acc
+      case h :: t => iter(t, acc map (p => if (h._1 == p._1) (p._1, p._2 - h._2) else p) filter (p => p._2 > 0))
+    }
+    iter(y, x)
+  }
 
   /** Returns a list of all anagram sentences of the given sentence.
     *

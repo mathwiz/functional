@@ -10,6 +10,16 @@ sentence.mkString("")
 val words = List("ate", "eat", "tea", "ape")
 words groupBy (x => wordOccurrences(x))
 val fullSet = wordOccurrences("belle")
+
+subtract(fullSet, List(('e', 2)))
+def subtract(x: Occurrences, y: Occurrences): Occurrences = {
+  def iter(subs: Occurrences, acc: Occurrences): Occurrences = subs match {
+    case Nil => acc
+    case h :: t => iter(t, acc map (p => if (h._1 == p._1) (p._1, p._2 - h._2) else p) filter (p => p._2 > 0))
+  }
+  iter(y, x)
+}
+
 val allPairs =
   for {
     pair <- fullSet
@@ -17,21 +27,14 @@ val allPairs =
   } yield (pair._1, i)
 val subsets = fullSet.toSet.subsets.map(x => x.toList).toList
 val allSubsets = allPairs.toSet.subsets.map(x => x.toList).toList.distinct
-val withMoreThanOne = fullSet.filter(x => x._2 > 1)
-val withOnlyOne = fullSet.filterNot(x => x._2 > 1)
-val expanded = (for {
-  pair <- withMoreThanOne
-  subset <- subsets if subset.contains(pair)
-  i <- 1 to pair._2
-} yield subset.patch(subset.indexOf(pair), List((pair._1, i)), 1)).distinct
 val smallSubset = List(('a', 2), ('b', 2))
 val expanded2 = smallSubset.map(p => for (n <- List.range(1, p._2 + 1)) yield (p._1, n))
 
 val combos = combinations(smallSubset)
-val combos1 = combinations(List(('a',2)))
+val combos1 = combinations(List(('a', 2)))
 def combinations(pairs: List[(Char, Int)]): List[List[(Char, Int)]] = {
   val allPairs = pairs map (p => for (n <- List.range(1, p._2 + 1)) yield (p._1, n))
-  def combinationList(ls: List[List[(Char,Int)]]): List[List[(Char,Int)]] = ls match {
+  def combinationList(ls: List[List[(Char, Int)]]): List[List[(Char, Int)]] = ls match {
     case Nil => Nil :: Nil
     case head :: tail => val rec = combinationList(tail)
       rec.flatMap(r => head.map(t => t :: r))
@@ -50,7 +53,7 @@ val sub = subset(fullSet)
 sub.length
 def subset(occurrences: Occurrences): List[List[(Char, Int)]] = {
   val subsets = occurrences.toSet.subsets.map(x => x.toList).toList
-  def combinationList(ls: List[List[(Char,Int)]]): List[List[(Char,Int)]] = ls match {
+  def combinationList(ls: List[List[(Char, Int)]]): List[List[(Char, Int)]] = ls match {
     case Nil => Nil :: Nil
     case head :: tail => val rec = combinationList(tail)
       rec.flatMap(r => head.map(t => t :: r))
