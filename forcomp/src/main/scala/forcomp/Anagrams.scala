@@ -157,15 +157,15 @@ object Anagrams {
     * Note: There is only one anagram of an empty sentence.
     */
   def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
-    def perm(occurrences: Occurrences, acc: Sentence): List[Sentence] = occurrences match {
+    def iter(occurrences: Occurrences, acc: Sentence): List[Sentence] = occurrences match {
       case Nil => List(acc)
       case occ =>
         for {
           subset <- combinations(occurrences)
           word <- dictionaryByOccurrences(subset)
-          sentence <- perm(subtract(occ, subset), acc ::: List(word))
+          sentence <- iter(subtract(occ, subset), word :: acc)
         } yield sentence
     }
-    perm(sentenceOccurrences(sentence), Nil)
+    iter(sentenceOccurrences(sentence), Nil)
   }
 }
