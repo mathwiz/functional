@@ -161,7 +161,7 @@ object Anagrams {
       case Nil => List(acc)
       case occ =>
         for {
-          subset <- combinations(occurrences)
+          subset <- combinations(occurrences) if dictionaryByOccurrences contains subset
           word <- dictionaryByOccurrences(subset)
           sentence <- iter(subtract(occ, subset), word :: acc)
         } yield sentence
