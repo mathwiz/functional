@@ -57,7 +57,7 @@ object Anagrams {
     * List(('a', 1), ('e', 1), ('t', 1)) -> Seq("ate", "eat", "tea")
     *
     */
-  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = dictionary groupBy (x => wordOccurrences(x)) withDefaultValue(List[Word]())
+  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = dictionary groupBy (x => wordOccurrences(x)) withDefaultValue (List[Word]())
 
   /** Returns all the anagrams of a given word. */
   def wordAnagrams(word: Word): List[Word] = dictionaryByOccurrences(wordOccurrences(word))
@@ -86,7 +86,7 @@ object Anagrams {
     */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
     val subsets = occurrences.toSet.subsets.map(x => x.toList).toList
-    def combinationList(ls: List[List[(Char,Int)]]): List[List[(Char,Int)]] = ls match {
+    def combinationList(ls: List[List[(Char, Int)]]): List[List[(Char, Int)]] = ls match {
       case Nil => Nil :: Nil
       case head :: tail => val rec = combinationList(tail)
         rec.flatMap(r => head.map(t => t :: r))
@@ -156,5 +156,16 @@ object Anagrams {
     *
     * Note: There is only one anagram of an empty sentence.
     */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+    def perm(occurrences: Occurrences, acc: Sentence): List[Sentence] = occurrences match {
+      case Nil => List(acc)
+      case occ =>
+        for {
+          subset <- combinations(occurrences)
+          word <- dictionaryByOccurrences(subset)
+          sentence <- perm(subtract(occ, subset), acc ::: List(word))
+        } yield sentence
+    }
+    perm(sentenceOccurrences(sentence), Nil)
+  }
 }
