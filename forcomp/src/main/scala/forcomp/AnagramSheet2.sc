@@ -1,12 +1,13 @@
 import forcomp.Anagrams._
 
-val sentence = List("Yesman")
+val sentence = List("a","bed")
 val sOcc = sentenceOccurrences(sentence)
 val combos = combinations(sOcc)
 lengthOfCombo(sOcc)
 val combosMap = combos.groupBy(lengthOfCombo).filter(p => p._1 != 0)
 val subsets = (for (x <- combosMap.keys.toSet.subsets()) yield x) toList
 val sumSubsets = subsets.filter(it => it.foldLeft(0)((a, b) => a + b) == 4)
+wordAnagrams("rulezLinux")
 
 def lengthOfCombo(occ: Occurrences): Int = occ.foldRight(0) { (x, y) => x._2 + y }
 
@@ -18,7 +19,7 @@ def test(sentence: Sentence): List[Sentence] = {
     case Nil => List(acc)
     case occ =>
       for {
-        subset <- combinations(occurrences) if dictionaryByOccurrences contains subset
+        subset <- combinations(occurrences)
         word <- dictionaryByOccurrences(subset)
         sentence <- iter(subtract(occ, subset), word :: acc)
       } yield sentence
