@@ -7,3 +7,4 @@ def listdown(n: Int, ns: List[Int]): List[Int] = {
 }
 
 val ns = listdown(4, List())
+ns.tail
