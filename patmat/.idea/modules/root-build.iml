@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="root-build" external.linked.project.path="$MODULE_DIR$/../../project" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" sbt.imports="sbt._, Keys._, dsl._, StudentBuild._, _root_.com.typesafe.sbteclipse.plugin.EclipsePlugin.autoImport._, _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.com.typesafe.sbteclipse.plugin.EclipsePlugin" sbt.resolvers="https://repo1.maven.org/maven2/|maven|public, http://repo.typesafe.com/typesafe/releases|maven|typesafe-releases, C:\Users\Yohan\.ivy2\cache|ivy|Local cache" type="SBT_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+<module external.linked.project.id="root-build" external.linked.project.path="$MODULE_DIR$/../../project" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" sbt.imports="StudentBuild._, _root_.com.typesafe.sbteclipse.plugin.EclipsePlugin.autoImport._, _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.com.typesafe.sbteclipse.plugin.EclipsePlugin, sbt._, Keys._, dsl._" sbt.resolvers="file:/$USER_HOME$/.sbt/preloaded|maven|local-preloaded, https://repo1.maven.org/maven2/|maven|public, C:\Users\yohan\.ivy2\cache|ivy|Local cache" type="SBT_MODULE" version="4">
+  <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/../../project/target/idea-classes" />
     <output-test url="file://$MODULE_DIR$/../../project/target/idea-test-classes" />
     <exclude-output />
@@ -12,9 +12,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="SBT: sbt-and-plugins">
+      <library name="sbt: sbt-and-plugins">
         <CLASSES>
-          <root url="jar://C:/Software/activator-1.3.2/repository/com.typesafe/config/1.2.0/bundles/config.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.typesafe/config/bundles/config-1.2.0.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.10.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.4.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.scalaj/scalaj-http_2.10/jars/scalaj-http_2.10-2.2.1.jar!/" />
